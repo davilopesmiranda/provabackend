@@ -50,17 +50,20 @@ A API permite **registro e login de usuários**, criação e listagem de **posts
 ### Posts
 - **POST /posts** → cria novo post (autenticado)
 - **GET /posts** → lista todos os posts
+- **PUT /posts/{id}** → atualiza um post existente
+- **DELETE /posts/{id}** → exclui um post existente
 
 ### Comentários
 - **POST /posts/{postId}/comments** → cria comentário em um post (autenticado)
 - **GET /posts/{postId}/comments** → lista comentários de um post
-
+- **PUT** /posts/{postId}/comments/{commentId} → atualiza comentário
+- **DELETE** /posts/{postId}/comments/{commentId} → exclui comentário
 ---
 
 ## 🧪 Testando a API no Insomnia
 
-### 1. Registro
-```http
+1. Registro
+http
 POST http://localhost:8080/auth/register
 Content-Type: application/json
 
@@ -69,10 +72,8 @@ Content-Type: application/json
   "email": "davi@email.com",
   "password": "123456"
 }
-```
-
-### 2. Login
-```http
+2. Login
+http
 POST http://localhost:8080/auth/login
 Content-Type: application/json
 
@@ -80,14 +81,12 @@ Content-Type: application/json
   "email": "davi@email.com",
   "password": "123456"
 }
-```
 Resposta:
-```json
-{ "token": "jwt-gerado" }
-```
 
-### 3. Criar Post
-```http
+json
+{ "token": "jwt-gerado" }
+3. Criar Post
+http
 POST http://localhost:8080/posts
 Authorization: Bearer <token>
 Content-Type: application/json
@@ -96,16 +95,22 @@ Content-Type: application/json
   "title": "Meu primeiro post",
   "content": "Conteúdo do post"
 }
-```
-
-### 4. Listar Posts
-```http
-GET http://localhost:8080/posts
+4. Atualizar Post
+http
+PUT http://localhost:8080/posts/1
 Authorization: Bearer <token>
-```
+Content-Type: application/json
 
-### 5. Criar Comentário
-```http
+{
+  "title": "Título atualizado",
+  "content": "Novo conteúdo"
+}
+5. Deletar Post
+http
+DELETE http://localhost:8080/posts/1
+Authorization: Bearer <token>
+6. Criar Comentário
+http
 POST http://localhost:8080/posts/1/comments
 Authorization: Bearer <token>
 Content-Type: application/json
@@ -113,18 +118,24 @@ Content-Type: application/json
 {
   "content": "Muito bom esse post!"
 }
-```
-
-### 6. Listar Comentários
-```http
-GET http://localhost:8080/posts/1/comments
+7. Atualizar Comentário
+http
+PUT http://localhost:8080/posts/1/comments/1
 Authorization: Bearer <token>
-```
+Content-Type: application/json
 
+{
+  "content": "Comentário atualizado"
+}
+8. Deletar Comentário
+http
+DELETE http://localhost:8080/posts/1/comments/1
+Authorization: Bearer <token>
 ---
 
+
 ## 🔮 Possíveis Melhorias Futuras
-- Implementar edição e exclusão de posts e comentários.
+
 - Adicionar paginação nas listagens.
 - Criar sistema de roles (admin, user).
 
