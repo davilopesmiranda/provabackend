@@ -156,7 +156,6 @@ O objetivo é implementar um CRUD de posts com segurança e documentação bási
 ## 💡 Possíveis melhorias futuras
 
 - Implementar **DTOs** para separar entidades do contrato da API.
-- Adicionar **Swagger/OpenAPI** para documentação interativa.
 - Criar **testes automatizados** (unitários e de integração).
 - Melhorar tratamento de erros com mensagens padronizadas.
 - Adicionar paginação e ordenação na listagem de posts.
