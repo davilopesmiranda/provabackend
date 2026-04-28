@@ -1,169 +1,136 @@
 
----
-
 ```markdown
-# 📌 Prova Backend - API com Spring Boot e JWT
+# 📌 Prova Backend - API com JWT
 
-Este projeto é uma API REST desenvolvida em **Spring Boot** com autenticação via **JWT**.  
-O objetivo é implementar um CRUD de posts com segurança e documentação básica.
+Este projeto implementa uma API REST em Java com Spring Boot, utilizando autenticação JWT.  
+A API permite **registro e login de usuários**, criação e listagem de **posts**, além de **comentários** vinculados a cada post.
 
 ---
 
-## 🚀 Como executar o projeto
+## 🚀 Configuração e Execução
 
-### Pré-requisitos
-- **Java 17+**
-- **Maven**
-- **Banco de dados** (H2 em memória ou PostgreSQL/MySQL, conforme configuração)
-
-### Passos
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/prova-backend.git
+   git clone <url-do-repo>
    ```
-2. Entre na pasta do projeto:
-   ```bash
-   cd prova-backend
-   ```
-3. Configure o arquivo `application.properties`:
+2. Configure o banco de dados MySQL no `application.properties`:
    ```properties
-   spring.datasource.url=jdbc:h2:mem:testdb
-   spring.datasource.driverClassName=org.h2.Driver
-   spring.datasource.username=sa
-   spring.datasource.password=
-   spring.jpa.hibernate.ddl-auto=update
-
-   api.security.token.secret=meuSegredoJWT
+   spring.datasource.url=jdbc:mysql://localhost:3306/provabackend
+   spring.datasource.username=root
+   spring.datasource.password=senha
+   api.security.token.secret=algumasecretaforte
    ```
-4. Execute o projeto:
+3. Execute o projeto:
    ```bash
    mvn spring-boot:run
    ```
-5. Acesse a API em:
+4. A API estará disponível em:
    ```
    http://localhost:8080
    ```
 
 ---
 
-## 📌 Endpoints disponíveis
-
-### Autenticação
-- **POST /auth/register**  
-  Request:
-  ```json
-  {
-    "name": "Davi",
-    "email": "usuario@email.com",
-    "password": "123456"
-  }
-  ```
-  Response:
-  ```json
-  {
-    "id": 1,
-    "name": "Davi",
-    "email": "usuario@email.com"
-  }
-  ```
-
-- **POST /auth/login**  
-  Request:
-  ```json
-  {
-    "email": "usuario@email.com",
-    "password": "123456"
-  }
-  ```
-  Response:
-  ```json
-  {
-    "token": "jwt-gerado"
-  }
-  ```
-
-### Posts
-- **POST /posts** (criar post)  
-  Header: `Authorization: Bearer <token>`  
-  Request:
-  ```json
-  {
-    "title": "Meu primeiro post",
-    "content": "Conteúdo do post"
-  }
-  ```
-  Response:
-  ```json
-  {
-    "id": 1,
-    "title": "Meu primeiro post",
-    "content": "Conteúdo do post",
-    "userEmail": "usuario@email.com"
-  }
-  ```
-
-- **GET /posts** (listar posts)  
-  Response:
-  ```json
-  [
-    {
-      "id": 1,
-      "title": "Meu primeiro post",
-      "content": "Conteúdo do post",
-      "userEmail": "usuario@email.com"
-    }
-  ]
-  ```
-
-- **PUT /posts/{id}** (atualizar post)  
-  Request:
-  ```json
-  {
-    "title": "Post atualizado",
-    "content": "Novo conteúdo"
-  }
-  ```
-  Response:
-  ```json
-  {
-    "id": 1,
-    "title": "Post atualizado",
-    "content": "Novo conteúdo",
-    "userEmail": "usuario@email.com"
-  }
-  ```
-
-- **DELETE /posts/{id}** (remover post)  
-  Response: `204 No Content`
-
----
-
 ## 🔑 Autenticação JWT
 
-- O login gera um **token JWT** válido por **2 horas**.
-- O token deve ser enviado no header de cada requisição protegida:
+- Após o login, um token JWT é gerado.
+- Esse token deve ser enviado em todas as requisições protegidas no header:
   ```
   Authorization: Bearer <token>
   ```
-- O token contém:
-    - `sub`: email do usuário
-    - `id`: id do usuário
-    - `iss`: "auth-api"
-    - `exp`: data de expiração
 
 ---
 
-## 💡 Possíveis melhorias futuras
+## 📌 Endpoints
 
-- Implementar **DTOs** para separar entidades do contrato da API.
-- Adicionar **Swagger/OpenAPI** para documentação interativa.
-- Criar **testes automatizados** (unitários e de integração).
-- Melhorar tratamento de erros com mensagens padronizadas.
-- Adicionar paginação e ordenação na listagem de posts.
+### Usuários
+- **POST /auth/register** → registra novo usuário
+- **POST /auth/login** → autentica e retorna token JWT
+
+### Posts
+- **POST /posts** → cria novo post (autenticado)
+- **GET /posts** → lista todos os posts
+
+### Comentários
+- **POST /posts/{postId}/comments** → cria comentário em um post (autenticado)
+- **GET /posts/{postId}/comments** → lista comentários de um post
 
 ---
 
-## 📌 Autor
-Projeto desenvolvido por **Davi** como parte da prova de backend.
+## 🧪 Testando a API no Insomnia
+
+### 1. Registro
+```http
+POST http://localhost:8080/auth/register
+Content-Type: application/json
+
+{
+  "name": "Davi",
+  "email": "davi@email.com",
+  "password": "123456"
+}
 ```
+
+### 2. Login
+```http
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+  "email": "davi@email.com",
+  "password": "123456"
+}
+```
+Resposta:
+```json
+{ "token": "jwt-gerado" }
+```
+
+### 3. Criar Post
+```http
+POST http://localhost:8080/posts
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "title": "Meu primeiro post",
+  "content": "Conteúdo do post"
+}
+```
+
+### 4. Listar Posts
+```http
+GET http://localhost:8080/posts
+Authorization: Bearer <token>
+```
+
+### 5. Criar Comentário
+```http
+POST http://localhost:8080/posts/1/comments
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "content": "Muito bom esse post!"
+}
+```
+
+### 6. Listar Comentários
+```http
+GET http://localhost:8080/posts/1/comments
+Authorization: Bearer <token>
+```
+
+---
+
+## 🔮 Possíveis Melhorias Futuras
+- Implementar edição e exclusão de posts e comentários.
+- Adicionar paginação nas listagens.
+- Criar sistema de roles (admin, user).
+
+---
+
+## 👨‍💻 Autor
+Projeto desenvolvido por **Davi** como parte da prova de backend.
+
 

@@ -1,7 +1,7 @@
 package com.argos.provabackend.controller;
 
 import com.argos.provabackend.domain.user.Post;
-import com.argos.provabackend.domain.user.repositories.PostRepository;
+import com.argos.provabackend.repositories.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

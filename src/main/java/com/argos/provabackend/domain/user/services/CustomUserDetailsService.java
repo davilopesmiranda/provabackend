@@ -1,6 +1,7 @@
-package com.argos.provabackend.domain.user;
+package com.argos.provabackend.domain.user.services;
 
-import com.argos.provabackend.domain.user.repositories.UserRepository;
+import com.argos.provabackend.domain.user.User;
+import com.argos.provabackend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

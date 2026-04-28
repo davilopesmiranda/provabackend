@@ -1,4 +1,4 @@
-package com.argos.provabackend.domain.user.repositories;
+package com.argos.provabackend.repositories;
 
 import com.argos.provabackend.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;

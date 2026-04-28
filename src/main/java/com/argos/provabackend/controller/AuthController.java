@@ -1,7 +1,7 @@
 package com.argos.provabackend.controller;
 
 import com.argos.provabackend.domain.user.User;
-import com.argos.provabackend.domain.user.repositories.UserRepository;
+import com.argos.provabackend.repositories.UserRepository;
 import com.argos.provabackend.infra.security.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
